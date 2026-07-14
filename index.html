@@ -145,6 +145,40 @@
     color:var(--ash-dim);text-transform:uppercase;border-top:1px solid var(--hair);padding-top:12px}
   .book .arc b{color:var(--bone)}
 
+  /* ---- buy button + review drawer (per book) ---- */
+  .book .actions{margin-top:16px;display:flex;flex-direction:column;gap:0}
+  .buy-btn{
+    font-family:'Space Mono',monospace;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;
+    padding:13px 16px;border:1px solid var(--crimson);color:var(--bone);background:var(--crimson);
+    transition:.2s;font-weight:700;cursor:pointer;display:block;width:100%;text-align:center;min-height:46px;
+  }
+  .buy-btn:hover{background:transparent;color:var(--crimson)}
+  .buy-btn.soon{
+    background:transparent;border-color:var(--hair);color:var(--ash);cursor:default;
+  }
+  .buy-btn.soon:hover{background:transparent;color:var(--ash)}
+  /* review drawer */
+  .rev-drawer{margin-top:10px;border:1px solid var(--hair);background:rgba(7,7,8,.4)}
+  .rev-toggle{
+    width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:11px 14px;background:transparent;border:0;cursor:pointer;color:var(--ash);
+    font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+    transition:color .2s;
+  }
+  .rev-toggle:hover{color:var(--bone)}
+  .rev-toggle .chev{transition:transform .3s;flex:none;font-size:.9rem;line-height:1}
+  .rev-drawer.open .rev-toggle .chev{transform:rotate(180deg)}
+  .rev-drawer.open .rev-toggle{color:var(--bone)}
+  .rev-body{
+    max-height:0;overflow:hidden;transition:max-height .35s ease;
+  }
+  .rev-body-inner{padding:0 14px 14px;color:var(--ash);font-size:.82rem;line-height:1.55}
+  .rev-body-inner b{color:var(--bone);font-weight:600}
+  .rev-body-inner .step{
+    font-family:'Space Mono',monospace;color:var(--crimson);font-size:.72rem;letter-spacing:.08em;
+    background:rgba(200,16,46,.1);padding:2px 6px;border-radius:2px;white-space:nowrap;
+  }
+
   /* ---- arc line ---- */
   .arcbar{display:flex;align-items:center;gap:14px;margin-top:46px;flex-wrap:wrap;
     font-family:'Oswald';text-transform:uppercase;letter-spacing:.08em;font-size:clamp(.92rem,2.6vw,1.05rem)}
@@ -361,6 +395,20 @@
           <h3>The Private Citizen&rsquo;s Survival Guide</h3>
           <p>The most common AI attacks on ordinary people &mdash; and the habits that block them. Your first-aid kit.</p>
           <div class="arc">Focus &mdash; <b>You</b></div>
+          <div class="actions">
+            <a class="buy-btn" href="https://www.amazon.com/books/" target="_blank" rel="noopener">Available soon</a>
+            <div class="rev-drawer">
+              <button class="rev-toggle" type="button" aria-expanded="false">
+                <span>Enjoyed the book? Leave a review</span>
+                <span class="chev">&#9662;</span>
+              </button>
+              <div class="rev-body">
+                <div class="rev-body-inner">
+                  Reviews are left on the <b>same Amazon page where you bought the book</b>. Open the book&rsquo;s page, scroll all the way to the bottom, and look for the <span class="step">Review this product</span> button. A single honest sentence helps other families find the guide &mdash; thank you.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </article>
 
@@ -371,6 +419,20 @@
           <h3>The Family Defence Handbook</h3>
           <p>Turning one prepared person into a protected household &mdash; children, parents, and the people you look after.</p>
           <div class="arc">Focus &mdash; <b>Your family</b></div>
+          <div class="actions">
+            <span class="buy-btn soon">Available soon</span>
+            <div class="rev-drawer">
+              <button class="rev-toggle" type="button" aria-expanded="false">
+                <span>How to review, once it&rsquo;s out</span>
+                <span class="chev">&#9662;</span>
+              </button>
+              <div class="rev-body">
+                <div class="rev-body-inner">
+                  When this book launches, reviews go on the <b>same Amazon page where you buy it</b>. Open the book&rsquo;s page, scroll all the way to the bottom, and use the <span class="step">Review this product</span> button.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </article>
 
@@ -381,6 +443,20 @@
           <h3>The Resilience Playbook</h3>
           <p>From reacting to ready: routines and systems that keep you a step ahead as the attacks keep evolving.</p>
           <div class="arc">Focus &mdash; <b>Lasting resilience</b></div>
+          <div class="actions">
+            <span class="buy-btn soon">Available soon</span>
+            <div class="rev-drawer">
+              <button class="rev-toggle" type="button" aria-expanded="false">
+                <span>How to review, once it&rsquo;s out</span>
+                <span class="chev">&#9662;</span>
+              </button>
+              <div class="rev-body">
+                <div class="rev-body-inner">
+                  When this book launches, reviews go on the <b>same Amazon page where you buy it</b>. Open the book&rsquo;s page, scroll all the way to the bottom, and use the <span class="step">Review this product</span> button.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </article>
     </div>
@@ -479,7 +555,7 @@
       <p class="pp-meta">Last updated: 5 July 2026</p>
 
       <h3>1. Data Administrator</h3>
-      <p>The administrator of your personal data is <strong>Henrik Halvorsen</strong>, independent author and publisher. Address: 318 Tarry Avenue West, Seattle, WA 98307-76410, United States. You can contact the administrator by email at <a href="mailto:henrik.halvorsen@knowtheattack.com">henrik.halvorsen@knowtheattack.com</a>. This policy applies to the KnowTheAttack Project book series and its companion websites (e.g. knowtheattack.com).</p>
+      <p>The administrator of your personal data is <strong>Henrik Halvorsen</strong>, independent author and publisher. Address: Gilarska 139, 03-589 Warsaw, Poland. You can contact the administrator by email at <a href="mailto:henrik.halvorsen@knowtheattack.com">henrik.halvorsen@knowtheattack.com</a>. This policy applies to the KnowTheAttack Project book series and its companion websites (e.g. knowtheattack.com).</p>
 
       <h3>2. Data We Collect</h3>
       <p>We believe in data minimalism. We only collect information that is strictly necessary to provide you with our content and updates.</p>
@@ -541,6 +617,17 @@
   document.getElementById('ppClose').addEventListener('click',ppCloseFn);
   ppModal.addEventListener('click',e=>{if(e.target===ppModal)ppCloseFn()});
   addEventListener('keydown',e=>{if(e.key==='Escape'&&ppModal.classList.contains('open'))ppCloseFn()});
+
+  // ---- review drawers ----
+  document.querySelectorAll('.rev-drawer').forEach(drawer=>{
+    const toggle=drawer.querySelector('.rev-toggle');
+    const body=drawer.querySelector('.rev-body');
+    toggle.addEventListener('click',()=>{
+      const open=drawer.classList.toggle('open');
+      toggle.setAttribute('aria-expanded',open?'true':'false');
+      body.style.maxHeight=open?body.scrollHeight+'px':'0px';
+    });
+  });
 
   const nav=document.getElementById('nav');
   let ticking=false;
