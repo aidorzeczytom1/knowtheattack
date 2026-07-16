@@ -710,10 +710,30 @@
     const drawer=document.getElementById('recenzja'+m[1]);
     if(!drawer) return;
     const card=drawer.closest('.book');
-    if(card) card.classList.add('in');            // pomiń fade-in, inaczej scrollHeight=0
+    /* Odsłaniamy WSZYSTKIE karty książek, nie tylko docelową.
+       Przy wejściu prosto z linku #recenzja scroll przeskakuje sekcję,
+       IntersectionObserver się nie odpala i sąsiednie karty zostają
+       puste (opacity:0). Na docelowej dodatkowo: bez .in scrollHeight=0
+       i szuflada otworzyłaby się pusta. */
+    document.querySelectorAll('.book.reveal').forEach(b=>b.classList.add('in'));
+    if(card) card.classList.add('in');
     requestAnimationFrame(()=>{
       openDrawer(drawer);
-      drawer.scrollIntoView({behavior:'smooth',block:'center'});
+      /* Czekamy aż szuflada skończy się rozwijać (max-height .35s).
+         Bez tego scrollIntoView liczy pozycję dla ZAMKNIĘTEJ szuflady,
+         karta potem rośnie i wypycha widok za daleko w dół.
+         Celujemy w całą kartę (.book), nie w samą szufladę,
+         żeby w kadrze była okładka + tytuł + rozwinięta recenzja. */
+      setTimeout(()=>{
+        /* Karta jest wyższa niż ekran (okładka 500x800 + tekst + szuflada),
+           więc block:'center' ucinałby górę z okładką. Zamiast tego
+           ustawiamy GÓRĘ karty tuż pod przyklejonym navem. */
+        const target=card||drawer;
+        const nav=document.getElementById('nav');
+        const navH=nav?nav.getBoundingClientRect().height:0;
+        const top=target.getBoundingClientRect().top+scrollY-navH-18;
+        scrollTo({top:Math.max(0,top),behavior:'smooth'});
+      },400);
     });
   };
   openReview(location.hash);                      // wejście z linku zewnętrznego
