@@ -2,6 +2,53 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+
+<!-- ============================================================
+     ===  BOOKLINKER — JEDYNE MIEJSCE DO EDYCJI  ===
+     ============================================================
+
+     JAK TO USTAWIĆ (raz na książkę):
+
+     1. Wejdź na https://booklinker.com i zaloguj się.
+     2. Kliknij "Add New Book" i wklej ASIN ebooka
+        (np. B0GXR8GK2L). ASIN bierzesz ze strony
+        produktu na Amazon KDP.
+     3. BookLinker wygeneruje link w formacie:
+            https://mybook.to/cos-tam
+     4. Skopiuj ten link i wklej go PONIŻEJ w miejsce
+        'https://mybook.to/XXXXX' — razem z https://
+     5. Zapisz plik i wypchnij na GitHub Pages. Koniec.
+
+     UWAGA: ASIN NIE trafia do tego pliku. ASIN siedzi
+     w panelu BookLinkera. Tutaj wklejasz TYLKO gotowy
+     link mybook.to. Dzięki temu, gdy zmienisz ASIN albo
+     dodasz nowy sklep, nie ruszasz strony.
+
+     DOPÓKI stoi tu 'XXXXX', przycisk danej książki
+     zostaje nieklikalny ("Available soon"). Po wklejeniu
+     prawdziwego linku przycisk sam zrobi się klikalny.
+     ============================================================ -->
+<script>
+  var BOOK_LINKS = {
+    '1': 'https://mybook.to/XXXXX',   /* <-- BOOK 1: The Private Citizen's Survival Guide */
+    '2': 'https://mybook.to/XXXXX',   /* <-- BOOK 2: The Family Defence Handbook */
+    '3': 'https://mybook.to/XXXXX'    /* <-- BOOK 3: The Resilience Playbook */
+  };
+
+  /* --- Przekierowanie knowtheattack.com/?book=1 -> BookLinker ---
+     Do linków ZEWNĘTRZNYCH: newsletter, wnętrze ebooka, social media.
+     Siedzi na samej górze <head>, przed CSS i przed okładkami,
+     więc strona nie zdąży się wyrenderować zanim przeskoczy dalej.
+     NIE EDYTUJ — linki zmieniasz wyżej, w BOOK_LINKS.        */
+  (function () {
+    var m = /[?&]book=([123])\b/.exec(location.search);
+    if (!m) return;
+    var url = BOOK_LINKS[m[1]];
+    if (!url || url.indexOf('XXXXX') !== -1) return;  /* link nieustawiony -> pokaż stronę */
+    location.replace(url);                            /* replace = brak wpisu w historii */
+  })();
+</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#070708">
 <title>Know the Attack &middot; Own the Defence &mdash; AI Cybercrime survival guides by Henrik Halvorsen</title>
@@ -396,8 +443,8 @@
           <p>The most common AI attacks on ordinary people &mdash; and the habits that block them. Your first-aid kit.</p>
           <div class="arc">Focus &mdash; <b>You</b></div>
           <div class="actions">
-            <a class="buy-btn" href="https://www.amazon.com/books/" target="_blank" rel="noopener">Available soon</a>
-            <div class="rev-drawer">
+            <span class="buy-btn soon" data-book="1">Available soon</span>
+            <div class="rev-drawer" id="recenzja1">
               <button class="rev-toggle" type="button" aria-expanded="false">
                 <span>Enjoyed the book? Leave a review</span>
                 <span class="chev">&#9662;</span>
@@ -420,8 +467,8 @@
           <p>Turning one prepared person into a protected household &mdash; children, parents, and the people you look after.</p>
           <div class="arc">Focus &mdash; <b>Your family</b></div>
           <div class="actions">
-            <span class="buy-btn soon">Available soon</span>
-            <div class="rev-drawer">
+            <span class="buy-btn soon" data-book="2">Available soon</span>
+            <div class="rev-drawer" id="recenzja2">
               <button class="rev-toggle" type="button" aria-expanded="false">
                 <span>How to review, once it&rsquo;s out</span>
                 <span class="chev">&#9662;</span>
@@ -444,8 +491,8 @@
           <p>From reacting to ready: routines and systems that keep you a step ahead as the attacks keep evolving.</p>
           <div class="arc">Focus &mdash; <b>Lasting resilience</b></div>
           <div class="actions">
-            <span class="buy-btn soon">Available soon</span>
-            <div class="rev-drawer">
+            <span class="buy-btn soon" data-book="3">Available soon</span>
+            <div class="rev-drawer" id="recenzja3">
               <button class="rev-toggle" type="button" aria-expanded="false">
                 <span>How to review, once it&rsquo;s out</span>
                 <span class="chev">&#9662;</span>
@@ -619,6 +666,13 @@
   addEventListener('keydown',e=>{if(e.key==='Escape'&&ppModal.classList.contains('open'))ppCloseFn()});
 
   // ---- review drawers ----
+  const openDrawer=drawer=>{
+    const toggle=drawer.querySelector('.rev-toggle');
+    const body=drawer.querySelector('.rev-body');
+    drawer.classList.add('open');
+    toggle.setAttribute('aria-expanded','true');
+    body.style.maxHeight=body.scrollHeight+'px';
+  };
   document.querySelectorAll('.rev-drawer').forEach(drawer=>{
     const toggle=drawer.querySelector('.rev-toggle');
     const body=drawer.querySelector('.rev-body');
@@ -628,6 +682,42 @@
       body.style.maxHeight=open?body.scrollHeight+'px':'0px';
     });
   });
+
+  /* ---- Przyciski "Available soon" -> BookLinker ----
+     Czyta BOOK_LINKS z góry <head>. Jeśli link jest ustawiony
+     (nie zawiera XXXXX), zamienia <span> na klikalny <a>.
+     Jeśli nie — przycisk zostaje szary i nieklikalny.
+     NIE EDYTUJ — linki zmieniasz w BOOK_LINKS na górze pliku. */
+  document.querySelectorAll('.buy-btn[data-book]').forEach(span=>{
+    const url=(window.BOOK_LINKS||{})[span.dataset.book];
+    if(!url||url.indexOf('XXXXX')!==-1) return;   // link nieustawiony -> zostaw "Available soon"
+    const a=document.createElement('a');
+    a.className='buy-btn';                        // bez .soon = czerwony, aktywny
+    a.href=url;
+    a.target='_blank';
+    a.rel='noopener';
+    a.textContent='Buy on Amazon';                // <-- tu zmienisz napis na przycisku
+    span.replaceWith(a);
+  });
+
+  /* ---- Linki #recenzja1 / #recenzja2 / #recenzja3 ----
+     knowtheattack.com/#recenzja1 -> przewija do książki 1
+     i od razu rozwija szufladę z info o recenzji.
+     Działa też przy kliknięciu takiego linku na już otwartej stronie. */
+  const openReview=hash=>{
+    const m=/^#recenzja([123])$/.exec(hash||'');
+    if(!m) return;
+    const drawer=document.getElementById('recenzja'+m[1]);
+    if(!drawer) return;
+    const card=drawer.closest('.book');
+    if(card) card.classList.add('in');            // pomiń fade-in, inaczej scrollHeight=0
+    requestAnimationFrame(()=>{
+      openDrawer(drawer);
+      drawer.scrollIntoView({behavior:'smooth',block:'center'});
+    });
+  };
+  openReview(location.hash);                      // wejście z linku zewnętrznego
+  addEventListener('hashchange',()=>openReview(location.hash));
 
   const nav=document.getElementById('nav');
   let ticking=false;
