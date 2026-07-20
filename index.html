@@ -4,48 +4,55 @@
 <meta charset="UTF-8">
 
 <!-- ============================================================
-     ===  BOOKLINKER — JEDYNE MIEJSCE DO EDYCJI  ===
+     ===  BOOKLINKER — THE ONLY PLACE YOU NEED TO EDIT  ===
      ============================================================
 
-     JAK TO USTAWIĆ (raz na książkę):
+     HOW TO SET THIS UP (once per book):
 
-     1. Wejdź na https://booklinker.com i zaloguj się.
-     2. Kliknij "Add New Book" i wklej ASIN ebooka
-        (np. B0GXR8GK2L). ASIN bierzesz ze strony
-        produktu na Amazon KDP.
-     3. BookLinker wygeneruje link w formacie:
-            https://mybook.to/cos-tam
-     4. Skopiuj ten link i wklej go PONIŻEJ w miejsce
-        'https://mybook.to/XXXXX' — razem z https://
-     5. Zapisz plik i wypchnij na GitHub Pages. Koniec.
+     1. Go to https://booklinker.com and sign in.
+     2. Click "Add New Book" and paste the ebook's ASIN
+        (e.g. B0GXR8GK2L). You get the ASIN from the
+        product page on Amazon KDP.
+     3. BookLinker generates a link in this format:
+            https://mybook.to/something
+     4. Copy that link and paste it BELOW, replacing
+        'https://mybook.to/XXXXX' — keep the https://
+     5. Save the file and push to GitHub Pages. Done.
 
-     UWAGA: ASIN NIE trafia do tego pliku. ASIN siedzi
-     w panelu BookLinkera. Tutaj wklejasz TYLKO gotowy
-     link mybook.to. Dzięki temu, gdy zmienisz ASIN albo
-     dodasz nowy sklep, nie ruszasz strony.
+     NOTE: the ASIN does NOT go in this file. The ASIN lives
+     in the BookLinker dashboard. Here you paste ONLY the
+     finished mybook.to link. That way, if you change the
+     ASIN or add a new store, you never touch the page.
 
-     DOPÓKI stoi tu 'XXXXX', przycisk danej książki
-     zostaje nieklikalny ("Available soon"). Po wklejeniu
-     prawdziwego linku przycisk sam zrobi się klikalny.
+     While 'XXXXX' is still here, that book's button stays
+     inactive ("Available soon" / "Coming soon"). Once you
+     paste the real link, the button becomes clickable on
+     its own.
+
+     >>> BOOK 2 IS IN PRE-ORDER <<<
+     Paste the Book 2 pre-order BookLinker link on the
+     line marked BOOK 2 below. Until you do, the Book 2
+     button shows the pre-order call-to-action but is not
+     yet clickable.
      ============================================================ -->
 <script>
   var BOOK_LINKS = {
-    '1': 'https://mybook.to/CreLG',   /* <-- BOOK 1: The Private Citizen's Survival Guide */
-    '2': 'https://mybook.to/XXXXX',   /* <-- BOOK 2: The Family Defence Handbook */
-    '3': 'https://mybook.to/XXXXX'    /* <-- BOOK 3: The Resilience Playbook */
+    '1': 'https://mybook.to/CreLG',   /* <-- BOOK 1: The Private Citizen's Survival Guide (LIVE) */
+    '2': 'https://mybook.to/XXXXX',   /* <-- BOOK 2: The Family Defence Handbook  ***PRE-ORDER: PASTE BOOKLINKER LINK HERE*** */
+    '3': 'https://mybook.to/XXXXX'    /* <-- BOOK 3: The Resilience Playbook (paste when live) */
   };
 
-  /* --- Przekierowanie knowtheattack.com/?book=1 -> BookLinker ---
-     Do linków ZEWNĘTRZNYCH: newsletter, wnętrze ebooka, social media.
-     Siedzi na samej górze <head>, przed CSS i przed okładkami,
-     więc strona nie zdąży się wyrenderować zanim przeskoczy dalej.
-     NIE EDYTUJ — linki zmieniasz wyżej, w BOOK_LINKS.        */
+  /* --- Redirect knowtheattack.com/?book=1 -> BookLinker ---
+     For EXTERNAL links: newsletter, ebook interior, social media.
+     Sits at the very top of <head>, before the CSS and before the
+     covers, so the page never renders before it jumps onward.
+     DO NOT EDIT — change the links above, in BOOK_LINKS.     */
   (function () {
     var m = /[?&]book=([123])\b/.exec(location.search);
     if (!m) return;
     var url = BOOK_LINKS[m[1]];
-    if (!url || url.indexOf('XXXXX') !== -1) return;  /* link nieustawiony -> pokaż stronę */
-    location.replace(url);                            /* replace = brak wpisu w historii */
+    if (!url || url.indexOf('XXXXX') !== -1) return;  /* link not set -> show the page */
+    location.replace(url);                            /* replace = no entry in history */
   })();
 </script>
 
@@ -180,12 +187,13 @@
   .book .cov{position:relative;overflow:hidden;aspect-ratio:500/800;background:#000}
   .book .cov img{width:100%;height:100%;object-fit:cover}
   .book.soon .cov img{filter:grayscale(.28) brightness(.85)}
-  /* Badge NA DOLE okładki: na górze nachodził na nadrukowany
-     w grafice tytuł "KNOW THE ATTACK". Tytuł jest wypalony w JPEG,
-     więc przesuwamy badge, nie tekst. Dół okładki jest ciemny i pusty. */
+  /* Badge at the BOTTOM of the cover: at the top it overlapped the
+     "KNOW THE ATTACK" title printed into the artwork. The title is baked
+     into the JPEG, so we move the badge, not the text. The bottom of the
+     cover is dark and empty. */
   .badge{position:absolute;bottom:12px;left:12px;z-index:3;font-family:'Space Mono';
     font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px;font-weight:700}
-  /* przyciemnienie pod badge — gdyby grafika w tym miejscu pojaśniała */
+  /* darkening under the badge — in case the artwork lightens in this spot */
   .book .cov::after{content:'';position:absolute;left:0;right:0;bottom:0;height:74px;z-index:2;
     background:linear-gradient(180deg,rgba(7,7,8,0),rgba(7,7,8,.72));pointer-events:none}
   .badge.live{background:var(--crimson);color:#fff}
@@ -449,15 +457,19 @@
           <p>The most common AI attacks on ordinary people &mdash; and the habits that block them. Your first-aid kit.</p>
           <div class="arc">Focus &mdash; <b>You</b></div>
           <div class="actions">
-            <span class="buy-btn soon" data-book="1">Available soon</span>
-            <div class="rev-drawer" id="recenzja1">
+            <span class="buy-btn soon" data-book="1" data-cta="Buy now on Amazon">Available soon</span>
+            <div class="rev-drawer" id="review1">
               <button class="rev-toggle" type="button" aria-expanded="false">
                 <span>Enjoyed the book? Leave a review</span>
                 <span class="chev">&#9662;</span>
               </button>
               <div class="rev-body">
                 <div class="rev-body-inner">
-                  Reviews are left on the <b>same Amazon page where you bought the book</b>. Open the book&rsquo;s page, scroll all the way to the bottom, and look for the <span class="step">Review this product</span> button. A single honest sentence helps other families find the guide &mdash; thank you.
+                  Reviews live on the <b>same Amazon page where you bought the book</b> &mdash; here is the quickest way to leave one:<br><br>
+                  <span class="step">1</span>&nbsp; Open the book&rsquo;s page on Amazon (the <b>Buy now on Amazon</b> button above takes you there).<br>
+                  <span class="step">2</span>&nbsp; Scroll all the way down to the <b>customer reviews</b> section.<br>
+                  <span class="step">3</span>&nbsp; Tap <span class="step">Write a customer review</span>, pick your star rating, and add a sentence or two.<br><br>
+                  A single honest sentence helps other families find the guide &mdash; thank you.
                 </div>
               </div>
             </div>
@@ -473,15 +485,19 @@
           <p>Turning one prepared person into a protected household &mdash; children, parents, and the people you look after.</p>
           <div class="arc">Focus &mdash; <b>Your family</b></div>
           <div class="actions">
-            <span class="buy-btn soon" data-book="2">Available soon</span>
-            <div class="rev-drawer" id="recenzja2">
+            <span class="buy-btn soon" data-book="2" data-cta="Pre-order at launch price">Pre-order soon</span>
+            <div class="rev-drawer" id="review2">
               <button class="rev-toggle" type="button" aria-expanded="false">
-                <span>How to review, once it&rsquo;s out</span>
+                <span>How to review once it&rsquo;s out</span>
                 <span class="chev">&#9662;</span>
               </button>
               <div class="rev-body">
                 <div class="rev-body-inner">
-                  When this book launches, reviews go on the <b>same Amazon page where you buy it</b>. Open the book&rsquo;s page, scroll all the way to the bottom, and use the <span class="step">Review this product</span> button.
+                  Pre-order now to lock in the <b>launch price</b> &mdash; it&rsquo;s delivered to your Kindle automatically on release day. Once you&rsquo;ve read it, reviews live on the <b>same Amazon page where you pre-ordered</b>:<br><br>
+                  <span class="step">1</span>&nbsp; Open the book&rsquo;s page on Amazon (the <b>Pre-order at launch price</b> button above takes you there).<br>
+                  <span class="step">2</span>&nbsp; Scroll all the way down to the <b>customer reviews</b> section.<br>
+                  <span class="step">3</span>&nbsp; Tap <span class="step">Write a customer review</span>, pick your star rating, and add a sentence or two.<br><br>
+                  Early reviews make a real difference to a new book &mdash; thank you.
                 </div>
               </div>
             </div>
@@ -497,8 +513,8 @@
           <p>From reacting to ready: routines and systems that keep you a step ahead as the attacks keep evolving.</p>
           <div class="arc">Focus &mdash; <b>Lasting resilience</b></div>
           <div class="actions">
-            <span class="buy-btn soon" data-book="3">Available soon</span>
-            <div class="rev-drawer" id="recenzja3">
+            <span class="buy-btn soon" data-book="3" data-cta="Buy now on Amazon">Available soon</span>
+            <div class="rev-drawer" id="review3">
               <button class="rev-toggle" type="button" aria-expanded="false">
                 <span>How to review, once it&rsquo;s out</span>
                 <span class="chev">&#9662;</span>
@@ -552,7 +568,7 @@
     <div class="kit reveal">
       <div class="inner">
         <span class="eyebrow">Free for readers</span>
-        <h2>The Family Defence Kit</h2>
+        <h2>The Personal Defence Kit</h2>
         <p>Join the readers&rsquo; list and get the printable one-page tools from the series &mdash; plus a short alert whenever a new scam pattern starts circulating.</p>
         <ul>
           <li>Safe-word fridge card</li>
@@ -689,51 +705,54 @@
     });
   });
 
-  /* ---- Przyciski "Available soon" -> BookLinker ----
-     Czyta BOOK_LINKS z góry <head>. Jeśli link jest ustawiony
-     (nie zawiera XXXXX), zamienia <span> na klikalny <a>.
-     Jeśli nie — przycisk zostaje szary i nieklikalny.
-     NIE EDYTUJ — linki zmieniasz w BOOK_LINKS na górze pliku. */
+  /* ---- "Available soon" / "Coming soon" buttons -> BookLinker ----
+     Reads BOOK_LINKS from the top of <head>. If a link is set
+     (does not contain XXXXX), swaps the <span> for a clickable <a>.
+     If not, the button stays greyed out and inactive.
+     The active label comes from each button's data-cta attribute
+     (so Book 1 says "Buy now on Amazon" and the Book 2 pre-order
+     says "Pre-order at launch price"). Change the label in the
+     markup's data-cta, and change the links in BOOK_LINKS above. */
   document.querySelectorAll('.buy-btn[data-book]').forEach(span=>{
     const url=(window.BOOK_LINKS||{})[span.dataset.book];
-    if(!url||url.indexOf('XXXXX')!==-1) return;   // link nieustawiony -> zostaw "Available soon"
+    if(!url||url.indexOf('XXXXX')!==-1) return;   // link not set -> leave "Available soon"
     const a=document.createElement('a');
-    a.className='buy-btn';                        // bez .soon = czerwony, aktywny
+    a.className='buy-btn';                         // no .soon = crimson, active
     a.href=url;
     a.target='_blank';
     a.rel='noopener';
-    a.textContent='Buy now on Amazon';            // <-- tu zmienisz napis na przycisku
+    a.textContent=span.dataset.cta || 'Buy now on Amazon';   // per-book label
     span.replaceWith(a);
   });
 
-  /* ---- Linki #recenzja1 / #recenzja2 / #recenzja3 ----
-     knowtheattack.com/#recenzja1 -> przewija do książki 1
-     i od razu rozwija szufladę z info o recenzji.
-     Działa też przy kliknięciu takiego linku na już otwartej stronie. */
+  /* ---- Links #review1 / #review2 / #review3 ----
+     knowtheattack.com/#review1 -> scrolls to book 1
+     and immediately opens the drawer with review info.
+     Also works when such a link is clicked on an already-open page. */
   const openReview=hash=>{
-    const m=/^#recenzja([123])$/.exec(hash||'');
+    const m=/^#review([123])$/.exec(hash||'');
     if(!m) return;
-    const drawer=document.getElementById('recenzja'+m[1]);
+    const drawer=document.getElementById('review'+m[1]);
     if(!drawer) return;
     const card=drawer.closest('.book');
-    /* Odsłaniamy WSZYSTKIE karty książek, nie tylko docelową.
-       Przy wejściu prosto z linku #recenzja scroll przeskakuje sekcję,
-       IntersectionObserver się nie odpala i sąsiednie karty zostają
-       puste (opacity:0). Na docelowej dodatkowo: bez .in scrollHeight=0
-       i szuflada otworzyłaby się pusta. */
+    /* Reveal ALL book cards, not just the target one.
+       When arriving straight from a #review link the scroll skips the
+       section, the IntersectionObserver never fires and the neighbouring
+       cards stay empty (opacity:0). On the target card as well: without
+       .in, scrollHeight=0 and the drawer would open empty. */
     document.querySelectorAll('.book.reveal').forEach(b=>b.classList.add('in'));
     if(card) card.classList.add('in');
     requestAnimationFrame(()=>{
       openDrawer(drawer);
-      /* Czekamy aż szuflada skończy się rozwijać (max-height .35s).
-         Bez tego scrollIntoView liczy pozycję dla ZAMKNIĘTEJ szuflady,
-         karta potem rośnie i wypycha widok za daleko w dół.
-         Celujemy w całą kartę (.book), nie w samą szufladę,
-         żeby w kadrze była okładka + tytuł + rozwinięta recenzja. */
+      /* Wait until the drawer finishes expanding (max-height .35s).
+         Without this, scrollIntoView measures the position of the CLOSED
+         drawer, the card then grows and pushes the view too far down.
+         We target the whole card (.book), not just the drawer, so the
+         frame shows the cover + title + the opened review. */
       setTimeout(()=>{
-        /* Karta jest wyższa niż ekran (okładka 500x800 + tekst + szuflada),
-           więc block:'center' ucinałby górę z okładką. Zamiast tego
-           ustawiamy GÓRĘ karty tuż pod przyklejonym navem. */
+        /* The card is taller than the screen (cover 500x800 + text + drawer),
+           so block:'center' would clip the top with the cover. Instead we
+           put the TOP of the card just under the sticky nav. */
         const target=card||drawer;
         const nav=document.getElementById('nav');
         const navH=nav?nav.getBoundingClientRect().height:0;
@@ -742,7 +761,7 @@
       },400);
     });
   };
-  openReview(location.hash);                      // wejście z linku zewnętrznego
+  openReview(location.hash);                       // arriving from an external link
   addEventListener('hashchange',()=>openReview(location.hash));
 
   const nav=document.getElementById('nav');
