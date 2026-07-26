@@ -800,5 +800,40 @@
     })();
   }
 </script>
+     <!-- GoatCounter — paste just before </body> -->
+<script data-goatcounter="https://knowtheattack.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<script>
+  // Wait until GoatCounter loads (script is async), then run fn
+  function gcReady(fn) {
+    if (window.goatcounter && window.goatcounter.count) return fn();
+    setTimeout(function () { gcReady(fn); }, 200);
+  }
+
+  // 1) Visit that arrived from the in-book link (.../#kit)
+  if (location.hash === '#kit') {
+    gcReady(function () {
+      window.goatcounter.count({
+        path:  'book-kit-arrival',
+        title: 'Arrived from #kit (ebook)',
+        event: true
+      });
+    });
+  }
+
+  // 2) Click on any on-page CTA pointing to #kit
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('a[href*="#kit"]');
+    if (!link) return;
+    gcReady(function () {
+      window.goatcounter.count({
+        path:  'cta-kit-click',
+        title: 'Clicked Family Defence Kit CTA',
+        event: true
+      });
+    });
+  });
+</script>
 </body>
 </html>
